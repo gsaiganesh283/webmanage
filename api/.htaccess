@@ -1,0 +1,3 @@
+# Make sure Apache passes the Authorization header through to PHP
+CGIPassAuth On
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1

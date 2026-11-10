@@ -1,0 +1,3 @@
+# Cached website logos fetched at runtime (keep the .htaccess)
+icons/*
+!icons/.htaccess

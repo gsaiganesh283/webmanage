@@ -1,0 +1,23 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Always use HTTPS on the live site (not on localhost / local network, for XAMPP testing).
+    # Mixing http and https breaks logins: the session cookie set over https is not sent over http.
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{HTTP_HOST} !^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.) [NC]
+    RewriteCond %{REQUEST_URI} ^/?(.*/)?api/ [NC]
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=308,L]
+
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{HTTP_HOST} !^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.) [NC]
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# Internal files are not meant to be opened directly
+<FilesMatch "\.(sql|md)$">
+    Require all denied
+</FilesMatch>
